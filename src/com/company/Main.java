@@ -1,21 +1,24 @@
 package com.company;
 
+import org.omg.PortableInterceptor.INACTIVE;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class Main {
-    static void Test(){
-        String [] hand = new Hand();
-        String a = new Card.Suit.CLUBS;
-        String b = new Card.Suit.DIAMONDS;
-        String c = new Card.Suit.SPADES
-        String d = new Card.Suit.HEARTS;
-        hand.add["a", "b", "c", "d"];
-
-
-
-    }
+//    static void Test() {
+//        String[] hand = new Hand();
+//        String a = new Card.Suit.CLUBS;
+//        String b = new Card.Suit.DIAMONDS;
+//        String c = new Card.Suit.SPADES
+//        String d = new Card.Suit.HEARTS;
+//        hand.add["a", "b", "c", "d"];
+//
+//
+//    }
 
     static HashSet<Card> createDeck() {
         HashSet<Card> deck = new HashSet<>();
@@ -38,47 +41,39 @@ public class Main {
     }
 
     static boolean isStraightFlush(HashSet<Card> hand) {
-        HashSet<Card.Suit> suits = hand.stream()
-                .map(card -> {
-                    return  card.suit;
-                })
-                .collect(Collectors.toCollection(HashSet::new));
-        HashSet<Card.Rank> ranks = hand.stream()
-                .map(card -> {
-                    return card.rank;
-                })
-                .collect(Collectors.toCollection(HashSet::new));
-        return suits.size() == 1;
-        return ranks.size() == 4;
+        return isStraight(hand) && isFlush(hand);
     }
+
+
     static boolean isStraight(HashSet<Card> hand) {
         HashSet<Card.Rank> rank = hand.stream()
-                .map(card ->{
+                .map(card -> {
                     return card.rank;
                 })
+                .sorted()
                 .collect(Collectors.toCollection(HashSet::new));
-        int hnd = rank;
-        rank.sort(hnd);
-        return rank.size() == 1;
+
+        ArrayList<Integer> ranked = new ArrayList<>();
+        int hnd = rank.;
+        for (int a = 0; a < rank.size(); a++) {
+            ranked.add(hnd + a);
+        }
+        return rank.equals(ranked);
 
     }
 
     static boolean twoPair(HashSet<Card> hand) {
-        HashSet<Card.Rank> rank = hand.stream();
-        HashSet<Card.Suit> suit = hand.stream()
+        ArrayList<Card.Rank> rank = hand.stream()
                 .map(card -> {
                     return card.rank;
-                    return card.suit;
                 })
-                .collect(Collector.ofCollection(HashSet::new));
-        if (rank == 2 & suit == 2) {
-            System.out.print("2pair");
-        }
-        else {
-            new throw Exception;
-        }
-        return;
-
+                .collect(Collectors.toCollection(ArrayList<Card.Rank>::new));
+        ArrayList<Integer> hnd = rank.stream().map(rank1 ->
+                Collections.frequency(rank, rank1))
+                .collect(Collectors.toCollection(HashSet<Integer>::new))
+                .stream()
+                .collect(Collectors.toCollection(ArrayList<Integer>::new));
+        return hnd.get(0) == 2 && hnd.size() == 1;
 
     }
 
@@ -89,6 +84,21 @@ public class Main {
                 })
                 .collect(Collectors.toCollection(HashSet::new));
         return rank.size() == 1;
+    }
+
+    static boolean isThreeOfAKind(HashSet<Card> hand) {
+        ArrayList<Card.Rank> ranks = hand.stream().map(card -> {
+            return card.rank;
+        })
+                .collect(Collectors.toCollection(ArrayList<Card.Rank>::new));
+        HashSet<Integer> frequency = ranks.stream().map(rank ->
+                Collections.frequency(ranks, rank))
+                .collect(Collectors.toCollection(HashSet<Integer>::new));
+        int sum = 0;
+        for (int freq : frequency) {
+            sum += freq;
+        }
+        return sum == 4 && frequency.size() != 1;
     }
 
 
